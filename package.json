@@ -1,0 +1,23 @@
+{
+  "name": "mypacks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hanifabo/liri-node-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hanifabo/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/Hanifabo/liri-node-app#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "spotify-web-api-js": "^0.21.2"
+  }
+}
