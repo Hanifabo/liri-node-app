@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Hanifabo/liri-node-app#readme",
   "dependencies": {
     "fs": "0.0.1-security",
-    "spotify-web-api-js": "^0.21.2"
+    "spotify-web-api-js": "^0.21.2",
+    "twitter": "^1.7.0"
   }
 }

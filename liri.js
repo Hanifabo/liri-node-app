@@ -1,33 +1,15 @@
 /**
  * Created by hanifa on 3/29/17.
  */
-//var tkeys = import("./twitterKeys");
-
-var testinfo = require("./keys.js")
+var Twitter = require('twitter');
+var keys = require("./keys.js")
 var request = require("request");
-var Spotify = require('spotify-web-api-js');
+//var Spotify = require('spotify-web-api-js');
 var fs = require('fs');
-//var s = new Spotify();
+
 
 var option = process.argv[2];
 var searchTerm = process.argv[3];
-
-//var fs = require("fs");
-var c_keys='';
-var c_secret='';
-var a_tokenKey='';
-var a_tokenKeyS='';
-
-//function grabData() {
-    var text = testinfo.twitterKeys;
-    c_keys =text.consumer_key;
-    c_secret=text.consumer_secret;
-    a_tokenKey=text.access_token_key;
-    a_tokenKeyS=text.access_token_secret;
-
-    console.log(text.consumer_key);
-//};
-
 
 function movie_this(movieName){
 
@@ -79,21 +61,23 @@ function spotify_this_song(movieName){
 
 function do_what_i_say(){
 
-    fs.readFile("info.txt",'utf8', function (err, data) {
+    fs.readFile("random.txt",'utf8', function (err, data) {
 
-        console.log("err");
+        if(err) console.log(err);
+
         var frstOption = data.split(",")[0];
         var scndOption = data.split(",")[1];
-        console.log(frstOption)
-        console.log(scndOption)
-        console.log(data)
+        console.log("******"+frstOption)
+        console.log("******"+scndOption)
+        //console.log(data)
 
     });
-
 
     if(searchTerm<0){
         searchTerm = "The%20Sign%20by%20Ace%20of%20Base";
     }
+
+
     request("https://api.spotify.com/v1/search?q=Ride%20Twenty%20One%20Pilots&type=track&limit=1", function(error, response, body) {
 
         // If the request is successful (i.e. if the response status code is 200)
@@ -111,26 +95,33 @@ function do_what_i_say(){
 
 function tweetMe() {
 
-    var params = {
-        screen_name: ‘ImanBenjamin_’,
-    count: 20,
-};
-
     var client = new Twitter ({
 
-        consumer_key: keysJS.twitterKeys.consumer_key,
-        consumer_secret: keysJS.twitterKeys.consumer_secret,
-        access_token_key: keysJS.twitterKeys.access_token_key,
-        access_token_secret: keysJS.twitterKeys.access_token_secret,
-    });
+        consumer_key: 'igGQ4M0G2GDhjFIPOHGpUo7Dz',
+        consumer_secret: 'GQpDKFQsKb0OtkdVcZwXfZ6LAeglbEifozjrvKc8CYgQuWsJGv',
+        access_token_key: '2813622571-Jx3BQ1DNthDCJXWOJAGvIZQ4aPBednpZuxZIqcK',
+        access_token_secret: 'IBJlBaIU9rYCOkpZYEdx41S7KTitHDv76A6iKcPzNJUh3'
 
-    client.get(‘statuses/user_timeline’, params, function(error, tweets, response) {
+        // consumer_key: keys.twitterKeys.consumer_key,
+        // consumer_secret: keys.twitterKeys.consumer_secret,
+        // access_token_key: keys.twitterKeys.access_token_key,
+        // access_token_secret: keys.twitterKeys.access_token_secret,
+    });
+    //screen_name: 'ImanBenjamin_'
+    var params = {screen_name: 'ImanBenjamin_',count:20,};
+
+    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+
         if (!error) {
+            console.log('===================================================================================================');
             for (var i =0; i < tweets.length; i++){
                 var tweeter = tweets[i];
                 console.log(tweeter.text);
-                console.log(“---------------------------“);
             }
+            console.log('===================================================================================================');
+        }
+        else {
+            console.log(error);
         }
     });
 
@@ -145,8 +136,13 @@ switch (option){
         spotify_this_song(searchTerm);
         break;
     }
+    case "my-tweets":{
+        console.log(keys.twitterKeys.consumer_key);
+        tweetMe();
+        break;
+    }
     case "do-what-i-say":{
-        spotify_this_song(searchTerm);
+        do_what_i_say(searchTerm);
         break;
     }
 
