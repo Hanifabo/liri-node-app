@@ -7,55 +7,71 @@ var request = require("request");
 //var Spotify = require('spotify-web-api-js');
 var fs = require('fs');
 
-
 var option = process.argv[2];
 var searchTerm = process.argv[3];
 
-function movie_this(movieName){
+function movie_this() {
+    // check in input search term is not not
 
-    // Then run a request to the OMDB API with the movie specified
-    request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&r=json", function(error, response, body) {
+    if (searchTerm) {
+        // Then run a request to the OMDB API with the movie specified
+        request("http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&r=json", function (error, response, body) {
 
-        // returns a status code of 200 if the request is successful)
-        if (!error && response.statusCode === 200) {
-
-            // Parse the body of the site and print the desired informatin
-            console.log("=============================================== ===============================================")
-            console.log("Title: " + JSON.parse(body).Title);
-            console.log("Year: " + JSON.parse(body).Year);
-            console.log("imdbRating: " + JSON.parse(body).imdbRating);
-            console.log("Country: " + JSON.parse(body).Country);
-            console.log("Language: " + JSON.parse(body).Language);
-            console.log("plot: " + JSON.parse(body).plot);
-            console.log("Actors: " + JSON.parse(body).Actors);
-            console.log("Rotten Tomatoes: " + JSON.parse(body).Ratings[1].Source);
-            console.log("=============================================== ===============================================")
-           // console.log("The movie's rating is: " + JSON.parse(body));
-           // console.log("The movie's rating is: " + JSON.parse(body));
-
-            //console.log("I'M HERE NOW FOR TESTING");
-        }
-    });
-
-    }
-
-function spotify_this_song(movieName){
-
-    if(searchTerm<0){
-        searchTerm = "The%20Sign%20by%20Ace%20of%20Base";
-    }
-        request("https://api.spotify.com/v1/search?q=Ride%20Twenty%20One%20Pilots&type=track&limit=1", function(error, response, body) {
-
-            // If the request is successful (i.e. if the response status code is 200)
+            // returns a status code of 200 if the request is successful)
             if (!error && response.statusCode === 200) {
 
+                // Parse the body of the site and print the desired informatin
                 console.log("=============================================== ===============================================")
-                 console.log("Artists: " + JSON.parse(body).tracks.items[0].artists[0].name);
-                 console.log("The Song's Name: " + JSON.parse(body).tracks.items[0].name);
-                 console.log("preview_url: " + JSON.parse(body).tracks.items[0].preview_url);
-                 console.log("Album: " + JSON.parse(body).tracks.items[0].album.name);
+                console.log("Title: " + JSON.parse(body).Title);
+                console.log("Year: " + JSON.parse(body).Year);
+                console.log("imdbRating: " + JSON.parse(body).imdbRating);
+                console.log("Country: " + JSON.parse(body).Country);
+                console.log("Language: " + JSON.parse(body).Language);
+                console.log("plot: " + JSON.parse(body).plot);
+                console.log("Actors: " + JSON.parse(body).Actors);
+                console.log("Rotten Tomatoes: " + JSON.parse(body).Ratings[1].Source);
                 console.log("=============================================== ===============================================")
             }
+            else {
+
+            }
+        });
+
+       // remember+the+titans
+    }
+
+    else {
+        console.log("Mr Nobo if you haven't watched 'Mr.Nobo', then you shuold: http://www.imdb.com/title/tt048it's onNextflix!");
+
+
+    };
+};
+
+function spotify_this_song(){
+var theTermHer ="";
+    if(searchTerm === undefined){
+        //searchTerm = "The%20Sign%20by%20Ace%20of%20Base";
+        theTermHer = "I want it that way";
+        console.log("GETTING IN: "+theTermHer);
+    }
+    else{
+        theTermHer = searchTerm.trim().replace(" ","%");
+
+    }
+
+        request("https://api.spotify.com/v1/search?q="+theTermHer+"&type=track&limit=1", function(error, response, body) {
+
+                console.log("THIS IS THE SONG PASSED: "+theTermHer);
+            // If the request is successful (i.e. if the response status code is 200)
+                if (!error && response.statusCode === 200) {
+
+                    console.log("=============================================== ===============================================")
+                     console.log("Artists: " + JSON.parse(body).tracks.items[0].artists[0].name);
+                     console.log("The Song's Name: " + JSON.parse(body).tracks.items[0].name);
+                     console.log("preview_url: " + JSON.parse(body).tracks.items[0].preview_url);
+                     console.log("Album: " + JSON.parse(body).tracks.items[0].album.name);
+                    console.log("=============================================== ===============================================")
+                }
         });
 };
 
@@ -67,8 +83,8 @@ function do_what_i_say(){
 
         var frstOption = data.split(",")[0];
         var scndOption = data.split(",")[1];
-        console.log("******"+frstOption)
-        console.log("******"+scndOption)
+        console.log("****** "+frstOption)
+        console.log("****** "+scndOption)
         //console.log(data)
 
     });
@@ -78,7 +94,7 @@ function do_what_i_say(){
     }
 
 
-    request("https://api.spotify.com/v1/search?q=Ride%20Twenty%20One%20Pilots&type=track&limit=1", function(error, response, body) {
+    request("https://api.spotify.com/v1/search?q="+searchTerm+"&type=track&limit=1", function(error, response, body) {
 
         // If the request is successful (i.e. if the response status code is 200)
         if (!error && response.statusCode === 200) {
@@ -129,11 +145,11 @@ function tweetMe() {
 
 switch (option){
     case "movie-this":{
-        movie_this(searchTerm);
+        movie_this();
         break;
     }
     case "spotify-this-song":{
-        spotify_this_song(searchTerm);
+        spotify_this_song();
         break;
     }
     case "my-tweets":{
